@@ -1,0 +1,36 @@
+curl -X POST "localhost:9200/restaurants2/_open?pretty"
+curl "localhost:9200/restaurants2/_mapping?pretty"
+
+curl -X POST "localhost:9200/_reindex?pretty" -H 'Content-Type: application/json' -d'
+{
+  "source": {
+    "remote": {
+      "host": "https://restaurants-17802426.us-west-2.bonsaisearch.net:443",
+      "username": "fphtgsuw4z",
+      "password": "98i9z4aet1"
+    },
+    "index": "restaurants2"
+  },
+  "dest": {
+    "index": "restaurants2"
+  }
+}
+'
+
+curl -X POST "localhost:9200/restaurants2/_delete_by_query" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match_all": {}
+  }
+}'
+
+curl -X GET "localhost:9200/restaurants2/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+    "query": {
+        "match_all": {}
+    },
+    "size" : 1
+}
+'
+
+curl -X DELETE "localhost:9200/restaurants2"
